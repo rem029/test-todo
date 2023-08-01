@@ -1,0 +1,75 @@
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJ0ZXN0dXNlcjEiLCJpYXQiOjE2OTA5Mjg4ODksImV4cCI6MTY5MDkzMjQ4OX0.chXikU-dLDQw9-pWTNmQTlLn8h8a7ZT4y-YqqyA2mo4
+
+
+###### CRUD TODO
+
+### Fetch all todos
+GET http://localhost:7070/api/todos
+Authorization: Bearer {{token}}
+
+### Fetch all todos with pagination (1st page, 2 items per page)
+GET http://localhost:7070/api/todos?page=1&maxItemsPerPage=2
+Authorization: Bearer {{token}}
+
+### Fetch all todos with pagination (2nd page, 2 items per page)
+GET http://localhost:7070/api/todos?page=2&maxItemsPerPage=2
+Authorization: Bearer {{token}}
+
+### Fetch all todos with pagination (3rd page, 2 items per page)
+GET http://localhost:7070/api/todos?page=3&maxItemsPerPage=2
+Authorization: Bearer {{token}}
+
+### Fetch all todos with pagination (4rd page, 2 items per page)
+GET http://localhost:7070/api/todos?page=4&maxItemsPerPage=2
+Authorization: Bearer {{token}}
+
+### Create new todo
+POST http://localhost:7070/api/todos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "LOL",
+  "description": "asdadsa the supermarket and buy groceries",
+  "completed": false
+}
+
+### Update a todo
+PUT http://localhost:7070/api/todos/7
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Buy groceries UPDATED",
+  "description": "Go to the supermarket and buy groceries",
+  "completed": true
+}
+
+### Fetch todo by ID
+GET http://localhost:7070/api/todos/7
+Authorization: Bearer {{token}}
+
+### Delete Fetch todo by ID
+DELETE http://localhost:7070/api/todos/4
+Authorization: Bearer {{token}}
+
+###### USER
+
+### Register a new user
+POST http://localhost:7070/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser1222",
+  "password": "testpassword1222"
+}
+
+### Log in with the registered user
+POST http://localhost:7070/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
