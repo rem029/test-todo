@@ -36,7 +36,7 @@ Authorization: Bearer {{token}}
 }
 
 ### Update a todo
-PUT http://localhost:7070/api/todos/7
+PUT http://localhost:7070/api/todos/13
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -47,11 +47,11 @@ Authorization: Bearer {{token}}
 }
 
 ### Fetch todo by ID
-GET http://localhost:7070/api/todos/7
+GET http://localhost:7070/api/todos/13
 Authorization: Bearer {{token}}
 
 ### Delete Fetch todo by ID
-DELETE http://localhost:7070/api/todos/4
+DELETE http://localhost:7070/api/todos/13
 Authorization: Bearer {{token}}
 
 ###### USER

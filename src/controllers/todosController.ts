@@ -8,82 +8,87 @@ import {
   deleteTodo as deleteTodoDB,
 } from "../models/todo"; // Import the CRUD functions from todo.ts
 
-export async function getAllTodos(req: Request, res: Response): Promise<void> {
+// Function to handle errors and send error response
+const handleError = (res: Response, error: Error): void => {
+  console.error(error);
+  res.status(500).json({ error: "Something went wrong" });
+};
+
+// Function to wrap try-catch block and call the specified function
+const handleFunction = async (
+  req: Request,
+  res: Response,
+  func: (req: Request, res: Response) => Promise<void>
+): Promise<void> => {
   try {
+    await func(req, res);
+  } catch (error) {
+    handleError(res, error as Error);
+  }
+};
+
+export const getAllTodosHandler = (
+  req: Request,
+  res: Response
+): Promise<void> =>
+  handleFunction(req, res, async () => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const maxItemsPerPage =
       parseInt(req.query.maxItemsPerPage as string, 10) || 10;
 
-    const paginatedTodos = await getAllTodosDB(page, maxItemsPerPage); // Call the getAllTodos function from the models
+    const paginatedTodos = await getAllTodosDB(page, maxItemsPerPage);
     res.json(paginatedTodos);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-}
+  });
 
-export async function getTodoById(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
-  try {
-    const todo: Todo | null = await getTodoByIdDB(Number(id)); // Call the getTodoById function from todo.ts
+export const getTodoByIdHandler = (
+  req: Request,
+  res: Response
+): Promise<void> =>
+  handleFunction(req, res, async () => {
+    const { id } = req.params;
+    const todo: Todo | null = await getTodoByIdDB(Number(id));
     if (todo) {
       res.json(todo);
     } else {
       res.status(404).json({ message: "Todo not found" });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-}
+  });
 
-export async function createTodo(req: Request, res: Response): Promise<void> {
-  const { title, description, completed } = req.body;
-  try {
+export const createTodoHandler = (req: Request, res: Response): Promise<void> =>
+  handleFunction(req, res, async () => {
+    const { title, description, completed } = req.body;
     const newTodo: Todo = await createTodoDB({
       title,
       description,
       completed,
       created_at: new Date(),
-    }); // Call the createTodo function from todo.ts
+    });
     res.status(201).json(newTodo);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-}
+  });
 
-export async function updateTodo(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
-  const { title, description, completed } = req.body;
-  try {
+export const updateTodoHandler = (req: Request, res: Response): Promise<void> =>
+  handleFunction(req, res, async () => {
+    const { id } = req.params;
+    const { title, description, completed } = req.body;
     const updatedTodo: Todo | null = await updateTodoDB(Number(id), {
       title,
       description,
       completed,
-    }); // Call the updateTodo function from todo.ts
+    });
     if (updatedTodo) {
       res.json(updatedTodo);
     } else {
       res.status(404).json({ message: "Todo not found" });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-}
+  });
 
-export async function deleteTodo(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
-  try {
-    const deleted: boolean = await deleteTodoDB(Number(id)); // Call the deleteTodo function from todo.ts
+export const deleteTodoHandler = (req: Request, res: Response): Promise<void> =>
+  handleFunction(req, res, async () => {
+    const { id } = req.params;
+    const deleted: boolean = await deleteTodoDB(Number(id));
     if (deleted) {
       res.json({ message: "Todo deleted successfully" });
     } else {
       res.status(404).json({ message: "Todo not found" });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
-}
+  });
