@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Todo } from "../models/todo"; // Import the Todo interface and CRUD functions
+import { Todo } from "../models/todo";
 import {
   createTodo as createTodoDB,
   getAllTodos as getAllTodosDB,
@@ -7,25 +7,7 @@ import {
   updateTodo as updateTodoDB,
   deleteTodo as deleteTodoDB,
 } from "../models/todo"; // Import the CRUD functions from todo.ts
-
-// Function to handle errors and send error response
-const handleError = (res: Response, error: Error): void => {
-  console.error(error);
-  res.status(500).json({ error: "Something went wrong" });
-};
-
-// Function to wrap try-catch block and call the specified function
-const handleFunction = async (
-  req: Request,
-  res: Response,
-  func: (req: Request, res: Response) => Promise<void>
-): Promise<void> => {
-  try {
-    await func(req, res);
-  } catch (error) {
-    handleError(res, error as Error);
-  }
-};
+import { handleFunction } from "../utilities/responseHandler";
 
 export const getAllTodosHandler = (
   req: Request,
