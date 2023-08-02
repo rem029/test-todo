@@ -3,8 +3,8 @@ import app from "../src/app";
 import knex from "../src/config/database";
 
 const testUser = {
-  username: "marieTest",
-  password: "marieTest",
+  username: "marieTestTodo",
+  password: "marieTestTodo",
 };
 
 let authToken: string;
@@ -47,7 +47,7 @@ describe("TODO CRUD", () => {
     expect(response.body.description).toBe(newTodo.description);
     expect(response.body.completed).toBe(newTodo.completed);
 
-    // Save the todo ID for further tests
+    // Save the todo ID for next tests
     todoId = response.body.id;
   });
 
@@ -57,7 +57,8 @@ describe("TODO CRUD", () => {
       .set("Authorization", `Bearer ${authToken}`);
 
     expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body).toHaveProperty("todos");
+    expect(Array.isArray(response.body.todos)).toBe(true);
   });
 
   it("should get a single TODO by ID", async () => {
