@@ -6,7 +6,6 @@ const saltRounds = Number(process.env.SALT_ROUND) || 10;
 export async function seed(knex: Knex): Promise<void> {
   await knex("users").del();
 
-  // For demonstration purposes, we'll use a hardcoded example user
   const username = "admin";
   const password = "admin";
   const hashedPassword = await bcrypt.hash(password, saltRounds);

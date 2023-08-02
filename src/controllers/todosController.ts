@@ -7,13 +7,13 @@ import {
   updateTodo as updateTodoDB,
   deleteTodo as deleteTodoDB,
 } from "../models/todo"; // Import the CRUD functions from todo.ts
-import { handleFunction } from "../utilities/responseHandler";
+import { handleServerResponse } from "../utilities/responseHandler";
 
 export const getAllTodosHandler = (
   req: Request,
   res: Response
 ): Promise<void> =>
-  handleFunction(req, res, async () => {
+  handleServerResponse(req, res, async () => {
     const page = parseInt(req.query.page as string, 10) || 1;
     const maxItemsPerPage =
       parseInt(req.query.maxItemsPerPage as string, 10) || 10;
@@ -26,7 +26,7 @@ export const getTodoByIdHandler = (
   req: Request,
   res: Response
 ): Promise<void> =>
-  handleFunction(req, res, async () => {
+  handleServerResponse(req, res, async () => {
     const { id } = req.params;
     const todo: Todo | null = await getTodoByIdDB(Number(id));
     if (todo) {
@@ -37,7 +37,7 @@ export const getTodoByIdHandler = (
   });
 
 export const createTodoHandler = (req: Request, res: Response): Promise<void> =>
-  handleFunction(req, res, async () => {
+  handleServerResponse(req, res, async () => {
     const { title, description, completed } = req.body;
     const newTodo: Todo = await createTodoDB({
       title,
@@ -49,7 +49,7 @@ export const createTodoHandler = (req: Request, res: Response): Promise<void> =>
   });
 
 export const updateTodoHandler = (req: Request, res: Response): Promise<void> =>
-  handleFunction(req, res, async () => {
+  handleServerResponse(req, res, async () => {
     const { id } = req.params;
     const { title, description, completed } = req.body;
     const updatedTodo: Todo | null = await updateTodoDB(Number(id), {
@@ -65,7 +65,7 @@ export const updateTodoHandler = (req: Request, res: Response): Promise<void> =>
   });
 
 export const deleteTodoHandler = (req: Request, res: Response): Promise<void> =>
-  handleFunction(req, res, async () => {
+  handleServerResponse(req, res, async () => {
     const { id } = req.params;
     const deleted: boolean = await deleteTodoDB(Number(id));
     if (deleted) {

@@ -8,11 +8,11 @@ dotenv.config(); // Load environment variables from .env file
 const jwtSecret = process.env.JWT_SECRET || "default_secret_key";
 
 // Verify the JWT token in the Authorization header
-export function authenticateJWT(
+export const authenticateJWT = (
   req: Request,
   res: Response,
   next: NextFunction
-) {
+) => {
   const token = req.header("Authorization")?.split(" ")[1];
 
   if (!token) {
@@ -29,4 +29,4 @@ export function authenticateJWT(
     req.user = user; // Store the decoded token data in the request object for later use
     next();
   });
-}
+};

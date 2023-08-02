@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 
-export function loggerMiddleware(
+export const loggerMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-): void {
+): void => {
   const { method, url, query, body } = req;
   const start = Date.now();
 
@@ -42,4 +42,4 @@ export function loggerMiddleware(
   };
 
   next();
-}
+};

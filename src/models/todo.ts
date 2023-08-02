@@ -27,10 +27,10 @@ export async function createTodo(todo: Todo): Promise<Todo> {
   return createdTodo.rows[0];
 }
 
-export async function getAllTodos(
+export const getAllTodos = async (
   page: number,
   maxItemsPerPage: number
-): Promise<{ todos: Todo[]; currentPage: number; totalPages: number }> {
+): Promise<{ todos: Todo[]; currentPage: number; totalPages: number }> => {
   const offset = (page - 1) * maxItemsPerPage;
 
   const totalCount = await knex
@@ -48,17 +48,17 @@ export async function getAllTodos(
     currentPage: page,
     totalPages: totalPages,
   };
-}
+};
 
-export async function getTodoById(id: number): Promise<Todo | null> {
+export const getTodoById = async (id: number): Promise<Todo | null> => {
   const todo = await knex.raw("SELECT * FROM todos WHERE id = ?", [id]);
   return todo.rows[0] || null;
-}
+};
 
-export async function updateTodo(
+export const updateTodo = async (
   id: number,
   updates: Partial<Todo>
-): Promise<Todo | null> {
+): Promise<Todo | null> => {
   const updatedTodo = await knex.raw(
     `
     UPDATE todos
@@ -70,7 +70,7 @@ export async function updateTodo(
   );
 
   return updatedTodo.rows[0] || null;
-}
+};
 
 export async function deleteTodo(id: number): Promise<boolean> {
   const result = await knex.raw("DELETE FROM todos WHERE id = ?", [id]);

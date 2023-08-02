@@ -13,16 +13,13 @@ beforeAll(async () => {
   // Migrate the database before running tests
   await knex.migrate.latest();
 
-  // Register a test user and obtain the JWT token
+  // Register a test user and get token for authentication
   const response = await request(app).post("/api/auth/register").send(testUser);
   authToken = response.body.token;
 });
 
 afterAll(async () => {
-  // Delete the registered test user
   await knex.raw("DELETE FROM users WHERE username = ?", [testUser.username]);
-
-  // Close the database connection and stop the server after all tests
   await knex.destroy();
 });
 

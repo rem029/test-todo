@@ -17,7 +17,7 @@ const errorUsernameExists = "Username already exists";
 const errorFailedToRegister = "Failed to register user";
 const errorFailedToAuthenticate = "Failed to authenticate user";
 
-export async function registerUser(req: Request, res: Response) {
+export const registerUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   if (!username && !password) {
     return res.status(400).json({ error: errorUsernameAndPasswordRequired });
@@ -54,9 +54,9 @@ export async function registerUser(req: Request, res: Response) {
     console.error(err);
     res.status(500).json({ error: errorFailedToRegister });
   }
-}
+};
 
-export async function loginUser(req: Request, res: Response) {
+export const loginUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: errorUsernameRequired });
@@ -90,4 +90,4 @@ export async function loginUser(req: Request, res: Response) {
     console.error(err);
     res.status(500).json({ error: errorFailedToAuthenticate });
   }
-}
+};
